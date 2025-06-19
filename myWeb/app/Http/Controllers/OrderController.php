@@ -73,4 +73,18 @@ public function store(Request $request)
         ->orderBy('created_at','desc')->paginate(15);
         return view('admin.orders.index', compact('orders'));
 }
+    // Admin xem chi tiết đơn hàng
+    public function adminShow($id){
+        $order = Order::with(['orderItems.product', 'user'])
+        ->findOrFail($id);
+        return view('admin.orders.show', compact('order'));
+    }
+    public function updateStatus(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+        $order->status = 'completed'; // Hoặc trạng thái khác tùy ý
+        $order->save();
+
+        return redirect()->route('admin.orders.index')->with('success', 'Cập nhật trạng thái đơn hàng thành công!');
+    }
 }

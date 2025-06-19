@@ -14,15 +14,15 @@ class AdminMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    // public function handle(Request $request, Closure $next)
-    // {
-    //     if (auth()->check() && auth()->user()->role === 1) {
-    //         // Nếu là admin, tiếp tục request
-    //         return $next($request);
-    //     }
+    public function handle(Request $request, Closure $next)
+    {
+        if (auth()->check() && auth()->user()->role === 1) {
+            // Nếu là admin, tiếp tục request
+            return $next($request);
+        }
 
-    //     // Nếu không phải admin, chuyển hướng về trang khác (ví dụ: trang home)
-    //     return redirect('/home');
-    // }
+        // Nếu không phải admin, chuyển hướng về trang khác (ví dụ: trang home)
+        return redirect('/home');
+    }
 }
 

@@ -27,6 +27,10 @@ Route::get('/welcome', function () {
     return view('welcome');  // Đây là view mặc định trong Laravel
 })->name('welcome');
 
+Route::get('/dashboard', function () {
+    return view('dashboard'); // hoặc view bất kỳ bạn muốn redirect đến
+})->middleware(['auth'])->name('dashboard');
+
 // Auth cần user login
 Route::middleware('auth')->group(function(){
 
@@ -41,7 +45,7 @@ Route::middleware('auth')->group(function(){
 });
 
 // auth cho admin
-Route::middleware('auth')->group(function (){ 
+Route::middleware('auth', 'admin')->group(function (){ 
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.products.index');
     
     // Route tạo sản phẩm
@@ -56,6 +60,11 @@ Route::middleware('auth')->group(function (){
     Route::delete('/admin/products/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
     // xem danh sach don hang
     Route::get('/admin/orders', [OrderController::class, 'adminIndex'])->name('admin.orders.index');
+    // xem chi tiet don hang
+    Route::get('/admin/orders/{id}', [OrderController::class, 'adminShow'])->name('admin.orders.show');
+
+    // Da giao hang
+    Route::patch('/admin/orders/{id}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
 
     // Route xem chi tiết sản phẩm
     Route::get('/admin/products/{slug}', [ProductController::class, 'show'])->name('admin.products.show');

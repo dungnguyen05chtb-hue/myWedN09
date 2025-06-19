@@ -42,6 +42,18 @@
     td:last-child, th:last-child {
         white-space: nowrap;
     }
+    .btn-sm
+    {
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #fff;
+        background-color: #28a745;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
+    }
     /* Trạng thái màu */
     .status {
         display: inline-block;
@@ -72,6 +84,8 @@
       <th>Tổng</th>
       <th>Trạng thái</th>
       <th>Ngày đặt</th>
+      <th>Thông tin</th>
+      <th>Hành động</th>
     </tr>
   </thead>
   <tbody>
@@ -86,6 +100,18 @@
         </span>
       </td>
       <td>{{ $o->created_at->format('d/m/Y H:i') }}</td>
+      <td>
+        <a href="{{ route('admin.orders.show', $o->id) }}" class="text-blue-600 hover:underline">Chi tiết</a>
+      </td>
+      <td>
+            @if($o->status === 'pending')
+        <form action="{{ route('admin.orders.updateStatus', $o->id) }}" method="POST" class="d-inline">
+            @csrf
+            @method('PATCH')
+            <button type="submit" class="btn btn-success btn-sm">Đã giao</button>
+        </form>
+    @endif
+      </td>
     </tr>
   @endforeach
   </tbody>
